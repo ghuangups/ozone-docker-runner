@@ -43,6 +43,7 @@ RUN curl -LSs -o rocksdb-6.8.1.tar.gz https://github.com/facebook/rocksdb/archiv
 FROM centos@sha256:b5e66c4651870a1ad435cd75922fe2cb943c9e973a9673822d1414824a1d0475
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum install -y \
+      awscli \
       bzip2 \
       java-11-openjdk \
       jq \
@@ -70,9 +71,9 @@ ADD https://repo.maven.apache.org/maven2/org/jboss/byteman/byteman/4.0.4/byteman
 RUN chmod o+r /opt/byteman.jar
 
 #async profiler for development profiling
-RUN mkdir -p /opt/profiler && \
-    cd /opt/profiler && \
-    curl -L https://github.com/jvm-profiling-tools/async-profiler/releases/download/v1.5/async-profiler-1.5-linux-x64.tar.gz | tar xvz
+RUN cd /opt && \
+    curl -L https://github.com/jvm-profiling-tools/async-profiler/releases/download/v2.0/async-profiler-2.0-linux-x64.tar.gz | tar xvz && \
+    mv async-profiler-2.0-linux-x64 profiler
 
 ENV JAVA_HOME=/usr/lib/jvm/jre/
 ENV LD_LIBRARY_PATH /usr/local/lib
